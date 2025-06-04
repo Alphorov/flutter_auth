@@ -18,6 +18,7 @@ class LogInScreen extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
+            SizedBox(height: 180),
             AppTextFiled(hintText: "e-mail"),
             SizedBox(height: 16),
             AppTextFiled(hintText: "password"),
@@ -28,7 +29,7 @@ class LogInScreen extends StatelessWidget {
               },
               child: Text('Submit'),
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 100),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -36,7 +37,7 @@ class LogInScreen extends StatelessWidget {
                   onPressed: () {},
                   style: AuthButtonStyle(buttonType: AuthButtonType.icon),
                 ),
-                SizedBox(width: 32),
+                SizedBox(width: 64),
                 TextButton(onPressed: () {}, child: Text('Sing Up')),
               ],
             ),
