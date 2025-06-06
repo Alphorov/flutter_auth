@@ -10,6 +10,7 @@ class AppTextFiled extends StatelessWidget {
     this.width,
     this.hasError = false,
     this.autocorrect = false,
+    this.obscureText = false,
   });
 
   final TextInputType? keyboardType;
@@ -26,11 +27,14 @@ class AppTextFiled extends StatelessWidget {
 
   final bool hasError;
 
+  final bool obscureText;
+
   @override
   Widget build(BuildContext context) => TextField(
     controller: controller,
     autocorrect: autocorrect,
     keyboardType: keyboardType,
+    obscureText: obscureText,
     decoration: InputDecoration(
       errorText: errorText,
       hintText: hintText,

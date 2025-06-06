@@ -77,6 +77,7 @@ class _LogInScreenState extends State<LogInScreen> {
               hintText: "password",
               errorText: errorMessage,
               controller: passwordController,
+              obscureText: true,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 32),

@@ -79,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             AppTextFiled(
               hintText: "e-mail",
               hasError: _hasError,
+              keyboardType: TextInputType.emailAddress,
               controller: emailController,
             ),
             SizedBox(height: 8),
@@ -86,12 +87,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
               hintText: "password",
               hasError: _hasError,
               controller: passwordController,
+              keyboardType: TextInputType.text,
+              obscureText: true,
             ),
             SizedBox(height: 8),
             AppTextFiled(
               hintText: "repeat password",
               errorText: _errorText,
               controller: repeatPasswordController,
+              obscureText: true,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 32),
