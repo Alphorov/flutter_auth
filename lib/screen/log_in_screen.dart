@@ -1,11 +1,58 @@
-import 'dart:developer';
-
 import 'package:auth_buttons/auth_buttons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_authenticator/auth/auth_controller.dart';
 import 'package:flutter_authenticator/widget/app_text_filed.dart';
 
-class LogInScreen extends StatelessWidget {
+class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
+
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
+  String? errorMessage;
+  late bool _hasError = false;
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> logIn() async {
+    final String email = emailController.text.trim();
+    final String password = passwordController.text.trim();
+
+    try {
+      if (email.isEmpty || password.isEmpty) {
+        setState(() {
+          errorMessage = 'email or password is empty';
+          _hasError = true;
+        });
+        return;
+      }
+
+      await AuthController().signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      errorMessage = null;
+      _hasError = false;
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+        _hasError = true;
+      });
+    }
+  }
+
+  void pushSignUp() => Navigator.of(context).pushNamed('/signup');
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -17,30 +64,40 @@ class LogInScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 180),
-            AppTextFiled(hintText: "e-mail"),
-            SizedBox(height: 16),
-            AppTextFiled(hintText: "password"),
-            SizedBox(height: 16),
-            OutlinedButton(
+            Spacer(),
+            AppTextFiled(
+              hintText: "e-mail",
+              hasError: _hasError,
+              controller: emailController,
+            ),
+            SizedBox(height: 8),
+            AppTextFiled(
+              hintText: "password",
+              errorText: errorMessage,
+              controller: passwordController,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton(onPressed: logIn, child: Text('Submit')),
+                  SizedBox(width: 16),
+                  TextButton(onPressed: pushSignUp, child: Text('Sing Up')),
+                ],
+              ),
+            ),
+            GoogleAuthButton(
               onPressed: () {
-                log('Submit button on the LogIn Screen is pressed');
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('In Progress...')));
               },
-              child: Text('Submit'),
+              style: AuthButtonStyle(buttonType: AuthButtonType.icon),
             ),
-            SizedBox(height: 100),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GoogleAuthButton(
-                  onPressed: () {},
-                  style: AuthButtonStyle(buttonType: AuthButtonType.icon),
-                ),
-                SizedBox(width: 64),
-                TextButton(onPressed: () {}, child: Text('Sing Up')),
-              ],
-            ),
+            Spacer(flex: 2),
           ],
         ),
       ),
