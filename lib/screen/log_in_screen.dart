@@ -91,11 +91,7 @@ class _LogInScreenState extends State<LogInScreen> {
               ),
             ),
             GoogleAuthButton(
-              onPressed: () {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text('In Progress...')));
-              },
+              onPressed: AuthController().signInWithGoogle,
               style: AuthButtonStyle(buttonType: AuthButtonType.icon),
             ),
             Spacer(flex: 2),

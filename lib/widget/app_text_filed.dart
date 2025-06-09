@@ -37,6 +37,9 @@ class AppTextFiled extends StatelessWidget {
     obscureText: obscureText,
     decoration: InputDecoration(
       errorText: errorText,
+      errorStyle: Theme.of(context).inputDecorationTheme.errorStyle?.copyWith(
+        overflow: TextOverflow.visible,
+      ),
       hintText: hintText,
       isDense: true,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
